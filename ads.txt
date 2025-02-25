@@ -1,0 +1,6 @@
+# Ads.txt file for notion-next
+# Replace the following with your actual ad network information
+# Format: <ad network domain>, <publisher ID>, <relationship type>, <certification authority ID>
+
+google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+# Add other ad networks as needed 
