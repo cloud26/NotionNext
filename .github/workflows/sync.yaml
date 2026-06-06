@@ -27,7 +27,9 @@ jobs:
           upstream_sync_repo: tangly1024/NotionNext
           upstream_sync_branch: main
           target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }} # automatically generated, no need to set
+          # If upstream includes workflow file changes, use a PAT with workflow+repo permissions.
+          # Secret name: UPSTREAM_SYNC_TOKEN (falls back to GITHUB_TOKEN when not configured).
+          target_repo_token: ${{ secrets.UPSTREAM_SYNC_TOKEN != '' && secrets.UPSTREAM_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
 
           # Set test_mode true to run tests instead of the true action!!
           test_mode: false
@@ -35,5 +37,5 @@ jobs:
       - name: Sync check
         if: failure()
         run: |
-          echo "[Error] 由于上游仓库的 workflow 文件变更，导致 GitHub 自动暂停了本次自动更新，你需要手动 Sync Fork 一次。"
+          echo "[Error] 同步失败：如涉及 .github/workflows 变更，请在仓库 Secrets 中配置 UPSTREAM_SYNC_TOKEN（需 workflow+repo 权限），再重试。"
           exit 1
